@@ -4,8 +4,8 @@ const ctx = canvas.getContext("2d");
 const gravity = 0.7;
 
 const p1 = new Person({
-  width: 50,
-  height: 50,
+  width: 45,
+  height: 100,
   position: {
     x: canvas.width / 2,
     y: canvas.height / 2,
@@ -21,10 +21,25 @@ const p1 = new Person({
     y: 0,
   },
   imageSrc: "../images/sprites/Player/IDLE.png",
-  scale: 2,
+  scale: 3,
   frameMax: 10,
-  offset: { x: 0, y: 300 },
-  inverter: false
+  offset: { x: 42*3, y: 47*3 },
+  inverter: false,
+  sprites: {
+    idle: {
+      imageSrc: "../images/sprites/Player/IDLE.png",
+      frameMax: 10,
+      image: new Image(),
+    },
+    run: {
+      imageSrc: "../images/sprites/Player/RUN.png",
+      frameMax: 16,
+    },
+    jump:{
+      imageSrc: "../images/sprites/Player/ATTACK.png",// Esse sprite não possui animação de pulo, então coloquei essa animação temporariamente
+      frameMax: 7,
+    }
+  }
 });
 
 function game() {

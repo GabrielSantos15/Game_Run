@@ -18,23 +18,41 @@ class Sprite {
     this.frameMax = frameMax;
     this.frameCurrent = 0;
     this.framesElapsed = 0;
-    this.framesHold = 10;
+    this.framesHold = 2;
     this.offset = offset;
     this.inverter = inverter;
   }
 
   draw() {
-    ctx.drawImage(
-      this.image,
-      this.frameCurrent * (this.image.width / this.frameMax),
-      0,
-      this.image.width / this.frameMax,
-      this.image.height,
-      this.position.x - this.offset.x,
-      this.position.y - this.offset.y,
-      (this.image.width / this.frameMax) * this.scale,
-      this.image.height * this.scale
-    );
+    if (this.inverter == true) {
+      ctx.scale(-1, 1);
+      ctx.translate(-canvas.width, 0);
+      ctx.drawImage(
+        this.image,
+        this.frameCurrent * (this.image.width / this.frameMax),
+        0,
+        this.image.width / this.frameMax,
+        this.image.height,
+        canvas.width - (this.position.x + this.offset.x + this.width),
+        this.position.y - this.offset.y,
+        (this.image.width / this.frameMax) * this.scale,
+        this.image.height * this.scale
+      );
+      ctx.scale(-1, 1);
+      ctx.translate(-canvas.width, 0);
+    } else {
+      ctx.drawImage(
+        this.image,
+        this.frameCurrent * (this.image.width / this.frameMax),
+        0,
+        this.image.width / this.frameMax,
+        this.image.height,
+        this.position.x - this.offset.x,
+        this.position.y - this.offset.y,
+        (this.image.width / this.frameMax) * this.scale,
+        this.image.height * this.scale
+      );
+    }
   }
 
   animeteFrames() {
