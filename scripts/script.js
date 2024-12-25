@@ -6,11 +6,20 @@ const gravity = 0.7;
 // =================================== Informações do jogador ============================
 
 const p1 = new Person({
+  life : 100,
   width: 45,
   height: 100,
   position: {
     x: canvas.width / 2,
     y: canvas.height / 2,
+  },
+  hitBox: {
+    width: 0,
+    height: 0,
+    position: {
+      x: 0,
+      y: 0,
+    },
   },
   direction: {
     up: false,
@@ -22,7 +31,10 @@ const p1 = new Person({
     x: 0,
     y: 0,
   },
-  defend: false,
+  status: {
+    atack: 0,
+    defend: false,
+  },
   imageSrc: "../images/sprites/Arrow/Idle.png",
   scale: 3,
   frameMax: 12,
@@ -50,6 +62,48 @@ const p1 = new Person({
       imageSrc: "../images/sprites/Arrow/Defend.png",
       frameMax: 19,
     },
+    atack1: {
+      imageSrc: "../images/sprites/Arrow/Atack1.png",
+      frameMax: 10,
+      atackStart: 6,
+      atackEnd: 9,
+      hitBox: {
+        width: 100,
+        height: 30,
+        position: {
+          x: 120,
+          y: 20,
+        },
+      },
+    },
+    atack2: {
+      imageSrc: "../images/sprites/Arrow/Atack2.png",
+      frameMax: 15,
+      atackStart: 9,
+      atackEnd: 11,
+      hitBox: {
+        width: 50,
+        height: 50,
+        position: {
+          x: 70,
+          y: 10,
+        },
+      },
+    },
+    atack3: {
+      imageSrc: "../images/sprites/Arrow/Atack3.png",
+      frameMax: 12,
+      atackStart: 6,
+      atackEnd: 9,
+      hitBox: {
+        width: 170,
+        height: 60,
+        position: {
+          x: -100,
+          y: -90,
+        },
+      },
+    },
   },
 });
 
@@ -67,6 +121,7 @@ game();
 // =================================== Teclado ============================
 
 window.addEventListener("keydown", (event) => {
+  console.log(event.key);
   switch (event.key) {
     case "w":
       p1.direction.up = true;
@@ -81,7 +136,16 @@ window.addEventListener("keydown", (event) => {
       p1.direction.right = true;
       break;
     case "Shift":
-      p1.defend = true;
+      p1.status.defend = true;
+      break;
+    case "e":
+      p1.status.atack = 1;
+      break;
+    case "f":
+      p1.status.atack = 2;
+      break;
+    case "r":
+      p1.status.atack = 3;
       break;
   }
 });
@@ -100,7 +164,7 @@ window.addEventListener("keyup", (event) => {
       p1.direction.right = false;
       break;
     case "Shift":
-      p1.defend = false;
+      p1.status.defend = false;
       break;
   }
 });

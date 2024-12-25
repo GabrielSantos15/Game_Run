@@ -3,9 +3,10 @@ class Person extends Sprite {
     width,
     height,
     position,
+    hitBox,
     direction,
     velocity,
-    defend,
+    status,
     imageSrc,
     scale,
     frameMax,
@@ -26,9 +27,10 @@ class Person extends Sprite {
     this.width = width;
     this.height = height;
     this.position = position;
+    this.hitBox = hitBox;
     this.direction = direction;
     this.velocity = velocity;
-    this.defend = defend;
+    this.status = status;
     this.inverter = inverter;
     this.sprites = sprites;
   }
@@ -37,9 +39,11 @@ class Person extends Sprite {
     this.velocity.x = 0;
 
     // gerencia os sprite
-    if(this.defend){
-      this.switchSprite("defend")
-    }else if (this.velocity.y < 0) {
+    if (this.status.atack !== 0) {
+      this.switchSprite("atack" + this.status.atack);
+    } else if (this.status.defend) {
+      this.switchSprite("defend");
+    } else if (this.velocity.y < 0) {
       this.switchSprite("jumpUp");
     } else if (this.velocity.y > 0) {
       this.switchSprite("jumpDown");
@@ -50,7 +54,7 @@ class Person extends Sprite {
     }
 
     // movimentação
-    if (!this.defend) {
+    if (!(this.status.atack !== 0 || this.status.defend)) {
       if (this.direction.left) {
         this.velocity.x = -10;
         this.inverter = true;
@@ -77,12 +81,20 @@ class Person extends Sprite {
     }
 
     this.updateSprite();
-    ctx.fillStyle = "#ff000074";
+    ctx.fillStyle = "#00ff0074";
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    ctx.fillStyle = "#ff000074";
+    ctx.fillRect(
+      this.hitBox.position.x,
+      this.hitBox.position.y,
+      this.hitBox.width,
+      this.hitBox.height
+    );
   }
 
   // aplica os sprites
   switchSprite(sprite) {
+    console.log(this.imageSrc);
     switch (sprite) {
       case "idle":
         if (this.imageSrc !== this.sprites.idle.imageSrc) {
@@ -122,6 +134,102 @@ class Person extends Sprite {
           this.image.src = this.imageSrc;
           this.frameMax = this.sprites.defend.frameMax;
           this.frameCurrent = 0;
+        }
+        break;
+      case "atack1":
+        if (this.imageSrc !== this.sprites.atack1.imageSrc) {
+          this.imageSrc = this.sprites.atack1.imageSrc;
+          this.image.src = this.imageSrc;
+          this.frameMax = this.sprites.atack1.frameMax;
+          this.frameCurrent = 0;
+        } else if (this.frameCurrent == this.frameMax - 1) {
+          this.status.atack = 0;
+        } else if (this.frameCurrent == this.sprites.atack1.atackStart) {
+          // adiciona a hitbox
+          this.hitBox.width = this.sprites.atack1.hitBox.width;
+          this.hitBox.height = this.sprites.atack1.hitBox.height;
+
+          if (!this.inverter) {
+            this.hitBox.position.x =
+              this.position.x +
+              this.width +
+              this.sprites.atack1.hitBox.position.x;
+          } else {
+            this.hitBox.position.x =
+              this.position.x -
+              this.sprites.atack1.hitBox.width -
+              this.sprites.atack1.hitBox.position.x;
+          }
+          this.hitBox.position.y =
+            this.position.y + this.sprites.atack1.hitBox.position.y;
+        } else if (this.frameCurrent == this.sprites.atack1.atackEnd - 1) {
+          // remove a hitbox
+          this.hitBox.width = 0;
+          this.hitBox.height = 0;
+        }
+        break;
+      case "atack2":
+        if (this.imageSrc !== this.sprites.atack2.imageSrc) {
+          this.imageSrc = this.sprites.atack2.imageSrc;
+          this.image.src = this.imageSrc;
+          this.frameMax = this.sprites.atack2.frameMax;
+          this.frameCurrent = 0;
+        } else if (this.frameCurrent == this.frameMax - 1) {
+          this.status.atack = 0;
+        } else if (this.frameCurrent == this.sprites.atack2.atackStart) {
+          // adiciona a hitbox
+          this.hitBox.width = this.sprites.atack2.hitBox.width;
+          this.hitBox.height = this.sprites.atack2.hitBox.height;
+
+          if (!this.inverter) {
+            this.hitBox.position.x =
+              this.position.x +
+              this.width +
+              this.sprites.atack2.hitBox.position.x;
+          } else {
+            this.hitBox.position.x =
+              this.position.x -
+              this.sprites.atack2.hitBox.width -
+              this.sprites.atack2.hitBox.position.x;
+          }
+          this.hitBox.position.y =
+            this.position.y + this.sprites.atack2.hitBox.position.y;
+        } else if (this.frameCurrent == this.sprites.atack2.atackEnd - 1) {
+          // remove a hitbox
+          this.hitBox.width = 0;
+          this.hitBox.height = 0;
+        }
+        break;
+      case "atack3":
+        if (this.imageSrc !== this.sprites.atack3.imageSrc) {
+          this.imageSrc = this.sprites.atack3.imageSrc;
+          this.image.src = this.imageSrc;
+          this.frameMax = this.sprites.atack3.frameMax;
+          this.frameCurrent = 0;
+        } else if (this.frameCurrent == this.frameMax - 1) {
+          this.status.atack = 0;
+        } else if (this.frameCurrent == this.sprites.atack3.atackStart) {
+          // adiciona a hitbox
+          this.hitBox.width = this.sprites.atack3.hitBox.width;
+          this.hitBox.height = this.sprites.atack3.hitBox.height;
+
+          if (!this.inverter) {
+            this.hitBox.position.x =
+              this.position.x +
+              this.width +
+              this.sprites.atack3.hitBox.position.x;
+          } else {
+            this.hitBox.position.x =
+              this.position.x -
+              this.sprites.atack3.hitBox.width -
+              this.sprites.atack3.hitBox.position.x;
+          }
+          this.hitBox.position.y =
+            this.position.y + this.sprites.atack3.hitBox.position.y;
+        } else if (this.frameCurrent == this.sprites.atack3.atackEnd - 1) {
+          // remove a hitbox
+          this.hitBox.width = 0;
+          this.hitBox.height = 0;
         }
         break;
     }
