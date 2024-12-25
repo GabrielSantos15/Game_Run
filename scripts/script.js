@@ -8,7 +8,9 @@ const gravity = 0.7;
 const p1 = new Person({
   life : 100,
   width: 45,
-  height: 100,
+  height: 130,
+  standardWidth:45,
+  standardHeight:130,
   position: {
     x: canvas.width / 2,
     y: canvas.height / 2,
@@ -31,9 +33,12 @@ const p1 = new Person({
     x: 0,
     y: 0,
   },
+  speed: 7,
   status: {
     atack: 0,
     defend: false,
+    takeHit: false,
+    death: false
   },
   imageSrc: "../images/sprites/Arrow/Idle.png",
   scale: 3,
@@ -50,6 +55,10 @@ const p1 = new Person({
       imageSrc: "../images/sprites/Arrow/Run.png",
       frameMax: 10,
     },
+    slide: {
+      imageSrc: "../images/sprites/Arrow/Slide.png",
+      frameMax: 13,
+    },
     jumpUp: {
       imageSrc: "../images/sprites/Arrow/Jump_up.png",
       frameMax: 3,
@@ -60,6 +69,14 @@ const p1 = new Person({
     },
     defend: {
       imageSrc: "../images/sprites/Arrow/Defend.png",
+      frameMax: 19,
+    },
+    takeHit: {
+      imageSrc: "../images/sprites/Arrow/takeHit.png",
+      frameMax: 6,
+    },
+    death: {
+      imageSrc: "../images/sprites/Arrow/Death.png",
       frameMax: 19,
     },
     atack1: {
@@ -131,6 +148,7 @@ window.addEventListener("keydown", (event) => {
       break;
     case "s":
       p1.direction.down = true;
+      p1.speed = 10;
       break;
     case "d":
       p1.direction.right = true;
@@ -159,6 +177,7 @@ window.addEventListener("keyup", (event) => {
       break;
     case "s":
       p1.direction.down = false;
+      p1.speed = 7;
       break;
     case "d":
       p1.direction.right = false;
@@ -168,3 +187,7 @@ window.addEventListener("keyup", (event) => {
       break;
   }
 });
+
+function dano(){
+  p1.demage(10)
+}

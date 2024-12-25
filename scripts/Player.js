@@ -1,11 +1,13 @@
 class Person extends Sprite {
   constructor({
+    life,
     width,
     height,
     position,
     hitBox,
     direction,
     velocity,
+    speed,
     status,
     imageSrc,
     scale,
@@ -24,12 +26,14 @@ class Person extends Sprite {
       offset,
       inverter,
     });
+    this.life = life;
     this.width = width;
     this.height = height;
     this.position = position;
     this.hitBox = hitBox;
     this.direction = direction;
     this.velocity = velocity;
+    this.speed = speed;
     this.status = status;
     this.inverter = inverter;
     this.sprites = sprites;
@@ -37,9 +41,14 @@ class Person extends Sprite {
 
   update() {
     this.velocity.x = 0;
+    if (this.life <= 0) this.status.death = true;
 
     // gerencia os sprite
-    if (this.status.atack !== 0) {
+    if (this.status.death) {
+      this.switchSprite("death");
+    } else if(this.status.takeHit){
+      this.switchSprite("takeHit");
+    }else if (this.status.atack !== 0) {
       this.switchSprite("atack" + this.status.atack);
     } else if (this.status.defend) {
       this.switchSprite("defend");
@@ -47,6 +56,8 @@ class Person extends Sprite {
       this.switchSprite("jumpUp");
     } else if (this.velocity.y > 0) {
       this.switchSprite("jumpDown");
+    }else if(this.direction.down){
+      this.switchSprite("slide");
     } else if (this.direction.left || this.direction.right) {
       this.switchSprite("run");
     } else {
@@ -56,11 +67,11 @@ class Person extends Sprite {
     // movimentação
     if (!(this.status.atack !== 0 || this.status.defend)) {
       if (this.direction.left) {
-        this.velocity.x = -10;
+        this.velocity.x = -this.speed;
         this.inverter = true;
       }
       if (this.direction.right) {
-        this.velocity.x = +10;
+        this.velocity.x = this.speed;
         this.inverter = false;
       }
     }
@@ -81,15 +92,23 @@ class Person extends Sprite {
     }
 
     this.updateSprite();
-    ctx.fillStyle = "#00ff0074";
+
+    // desenha caixas de colisão
+    ctx.fillStyle = "#ff0000";
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-    ctx.fillStyle = "#ff000074";
+    ctx.fillStyle = "#00ff00";
     ctx.fillRect(
       this.hitBox.position.x,
       this.hitBox.position.y,
       this.hitBox.width,
       this.hitBox.height
     );
+    document.querySelector("#life").innerHTML = this.life
+  }
+
+  demage(hitPower) {
+    this.status.takeHit = true;
+    this.life -= hitPower;
   }
 
   // aplica os sprites
@@ -109,6 +128,14 @@ class Person extends Sprite {
           this.imageSrc = this.sprites.run.imageSrc;
           this.image.src = this.imageSrc;
           this.frameMax = this.sprites.run.frameMax;
+          this.frameCurrent = 0;
+        }
+        break;
+      case "slide":
+        if (this.imageSrc !== this.sprites.slide.imageSrc) {
+          this.imageSrc = this.sprites.slide.imageSrc;
+          this.image.src = this.imageSrc;
+          this.frameMax = this.sprites.slide.frameMax;
           this.frameCurrent = 0;
         }
         break;
@@ -134,6 +161,27 @@ class Person extends Sprite {
           this.image.src = this.imageSrc;
           this.frameMax = this.sprites.defend.frameMax;
           this.frameCurrent = 0;
+        }
+        break;
+      case "death":
+        if (this.imageSrc !== this.sprites.death.imageSrc) {
+          this.imageSrc = this.sprites.death.imageSrc;
+          this.image.src = this.imageSrc;
+          this.frameMax = this.sprites.death.frameMax;
+          this.frameCurrent = 0;
+        }else if(this.frameCurrent == this.frameMax-1){
+
+          window.location.reload();
+        }
+        break;
+      case "takeHit":
+        if (this.imageSrc !== this.sprites.takeHit.imageSrc) {
+          this.imageSrc = this.sprites.takeHit.imageSrc;
+          this.image.src = this.imageSrc;
+          this.frameMax = this.sprites.takeHit.frameMax;
+          this.frameCurrent = 0;
+        }else if(this.frameCurrent == this.frameMax-1){
+          this.status.takeHit = false
         }
         break;
       case "atack1":
