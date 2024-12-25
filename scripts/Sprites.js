@@ -18,7 +18,7 @@ class Sprite {
     this.frameMax = frameMax;
     this.frameCurrent = 0;
     this.framesElapsed = 0;
-    this.framesHold = 2;
+    this.framesHold = 5;
     this.offset = offset;
     this.inverter = inverter;
   }

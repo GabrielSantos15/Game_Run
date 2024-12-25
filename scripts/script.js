@@ -3,6 +3,8 @@ const ctx = canvas.getContext("2d");
 
 const gravity = 0.7;
 
+// =================================== Informações do jogador ============================
+
 const p1 = new Person({
   width: 45,
   height: 100,
@@ -20,27 +22,38 @@ const p1 = new Person({
     x: 0,
     y: 0,
   },
-  imageSrc: "../images/sprites/Player/IDLE.png",
+  defend: false,
+  imageSrc: "../images/sprites/Arrow/Idle.png",
   scale: 3,
-  frameMax: 10,
-  offset: { x: 42*3, y: 47*3 },
+  frameMax: 12,
+  offset: { x: 137 * 3, y: 84 * 3 },
   inverter: false,
   sprites: {
     idle: {
-      imageSrc: "../images/sprites/Player/IDLE.png",
-      frameMax: 10,
+      imageSrc: "../images/sprites/Arrow/Idle.png",
+      frameMax: 12,
       image: new Image(),
     },
     run: {
-      imageSrc: "../images/sprites/Player/RUN.png",
-      frameMax: 16,
+      imageSrc: "../images/sprites/Arrow/Run.png",
+      frameMax: 10,
     },
-    jump:{
-      imageSrc: "../images/sprites/Player/ATTACK.png",// Esse sprite não possui animação de pulo, então coloquei essa animação temporariamente
-      frameMax: 7,
-    }
-  }
+    jumpUp: {
+      imageSrc: "../images/sprites/Arrow/Jump_up.png",
+      frameMax: 3,
+    },
+    jumpDown: {
+      imageSrc: "../images/sprites/Arrow/Jump_down.png",
+      frameMax: 3,
+    },
+    defend: {
+      imageSrc: "../images/sprites/Arrow/Defend.png",
+      frameMax: 19,
+    },
+  },
 });
+
+// =================================== Gerenciador do jogo ============================
 
 function game() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -50,6 +63,8 @@ function game() {
   requestAnimationFrame(game);
 }
 game();
+
+// =================================== Teclado ============================
 
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
@@ -64,6 +79,9 @@ window.addEventListener("keydown", (event) => {
       break;
     case "d":
       p1.direction.right = true;
+      break;
+    case "Shift":
+      p1.defend = true;
       break;
   }
 });
@@ -80,6 +98,9 @@ window.addEventListener("keyup", (event) => {
       break;
     case "d":
       p1.direction.right = false;
+      break;
+    case "Shift":
+      p1.defend = false;
       break;
   }
 });
