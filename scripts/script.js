@@ -40,47 +40,47 @@ const p1 = new Person({
     takeHit: false,
     death: false
   },
-  imageSrc: "../images/sprites/Arrow/Idle.png",
+  imageSrc: "./images/sprites/Arrow/Idle.png",
   scale: 3,
   frameMax: 12,
   offset: { x: 137 * 3, y: 84 * 3 },
   inverter: false,
   sprites: {
     idle: {
-      imageSrc: "../images/sprites/Arrow/Idle.png",
+      imageSrc: "./images/sprites/Arrow/Idle.png",
       frameMax: 12,
       image: new Image(),
     },
     run: {
-      imageSrc: "../images/sprites/Arrow/Run.png",
+      imageSrc: "./images/sprites/Arrow/Run.png",
       frameMax: 10,
     },
     slide: {
-      imageSrc: "../images/sprites/Arrow/Slide.png",
+      imageSrc: "./images/sprites/Arrow/Slide.png",
       frameMax: 13,
     },
     jumpUp: {
-      imageSrc: "../images/sprites/Arrow/Jump_up.png",
+      imageSrc: "./images/sprites/Arrow/Jump_up.png",
       frameMax: 3,
     },
     jumpDown: {
-      imageSrc: "../images/sprites/Arrow/Jump_down.png",
+      imageSrc: "./images/sprites/Arrow/Jump_down.png",
       frameMax: 3,
     },
     defend: {
-      imageSrc: "../images/sprites/Arrow/Defend.png",
+      imageSrc: "./images/sprites/Arrow/Defend.png",
       frameMax: 19,
     },
     takeHit: {
-      imageSrc: "../images/sprites/Arrow/takeHit.png",
+      imageSrc: "./images/sprites/Arrow/takeHit.png",
       frameMax: 6,
     },
     death: {
-      imageSrc: "../images/sprites/Arrow/Death.png",
+      imageSrc: "./images/sprites/Arrow/Death.png",
       frameMax: 19,
     },
     atack1: {
-      imageSrc: "../images/sprites/Arrow/Atack1.png",
+      imageSrc: "./images/sprites/Arrow/Atack1.png",
       frameMax: 10,
       atackStart: 6,
       atackEnd: 9,
@@ -94,7 +94,7 @@ const p1 = new Person({
       },
     },
     atack2: {
-      imageSrc: "../images/sprites/Arrow/Atack2.png",
+      imageSrc: "./images/sprites/Arrow/Atack2.png",
       frameMax: 15,
       atackStart: 9,
       atackEnd: 11,
@@ -108,7 +108,7 @@ const p1 = new Person({
       },
     },
     atack3: {
-      imageSrc: "../images/sprites/Arrow/Atack3.png",
+      imageSrc: "./images/sprites/Arrow/Atack3.png",
       frameMax: 12,
       atackStart: 6,
       atackEnd: 9,

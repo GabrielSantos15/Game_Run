@@ -94,15 +94,15 @@ class Person extends Sprite {
     this.updateSprite();
 
     // desenha caixas de colisão
-    ctx.fillStyle = "#ff0000";
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-    ctx.fillStyle = "#00ff00";
-    ctx.fillRect(
-      this.hitBox.position.x,
-      this.hitBox.position.y,
-      this.hitBox.width,
-      this.hitBox.height
-    );
+    // ctx.fillStyle = "#ff0000";
+    // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    // ctx.fillStyle = "#00ff00";
+    // ctx.fillRect(
+    //   this.hitBox.position.x,
+    //   this.hitBox.position.y,
+    //   this.hitBox.width,
+    //   this.hitBox.height
+    // );
     document.querySelector("#life").innerHTML = this.life
   }
 
@@ -114,76 +114,19 @@ class Person extends Sprite {
   // aplica os sprites
   switchSprite(sprite) {
     console.log(this.imageSrc);
+    if (this.imageSrc !== this.sprites[sprite].imageSrc) {
+      this.imageSrc = this.sprites[sprite].imageSrc;
+      this.image.src = this.imageSrc;
+      this.frameMax = this.sprites[sprite].frameMax;
+      this.frameCurrent = 0;
+  }
+  if (sprite === "death" && this.frameCurrent === this.frameMax - 1) {
+      window.location.reload();
+  }
+  if (sprite === "takeHit" && this.frameCurrent === this.frameMax - 1) {
+      this.status.takeHit = false;
+  }
     switch (sprite) {
-      case "idle":
-        if (this.imageSrc !== this.sprites.idle.imageSrc) {
-          this.imageSrc = this.sprites.idle.imageSrc;
-          this.image.src = this.imageSrc;
-          this.frameMax = this.sprites.idle.frameMax;
-          this.frameCurrent = 0;
-        }
-        break;
-      case "run":
-        if (this.imageSrc !== this.sprites.run.imageSrc) {
-          this.imageSrc = this.sprites.run.imageSrc;
-          this.image.src = this.imageSrc;
-          this.frameMax = this.sprites.run.frameMax;
-          this.frameCurrent = 0;
-        }
-        break;
-      case "slide":
-        if (this.imageSrc !== this.sprites.slide.imageSrc) {
-          this.imageSrc = this.sprites.slide.imageSrc;
-          this.image.src = this.imageSrc;
-          this.frameMax = this.sprites.slide.frameMax;
-          this.frameCurrent = 0;
-        }
-        break;
-      case "jumpUp":
-        if (this.imageSrc !== this.sprites.jumpUp.imageSrc) {
-          this.imageSrc = this.sprites.jumpUp.imageSrc;
-          this.image.src = this.imageSrc;
-          this.frameMax = this.sprites.jumpUp.frameMax;
-          this.frameCurrent = 0;
-        }
-        break;
-      case "jumpDown":
-        if (this.imageSrc !== this.sprites.jumpDown.imageSrc) {
-          this.imageSrc = this.sprites.jumpDown.imageSrc;
-          this.image.src = this.imageSrc;
-          this.frameMax = this.sprites.jumpDown.frameMax;
-          this.frameCurrent = 0;
-        }
-        break;
-      case "defend":
-        if (this.imageSrc !== this.sprites.defend.imageSrc) {
-          this.imageSrc = this.sprites.defend.imageSrc;
-          this.image.src = this.imageSrc;
-          this.frameMax = this.sprites.defend.frameMax;
-          this.frameCurrent = 0;
-        }
-        break;
-      case "death":
-        if (this.imageSrc !== this.sprites.death.imageSrc) {
-          this.imageSrc = this.sprites.death.imageSrc;
-          this.image.src = this.imageSrc;
-          this.frameMax = this.sprites.death.frameMax;
-          this.frameCurrent = 0;
-        }else if(this.frameCurrent == this.frameMax-1){
-
-          window.location.reload();
-        }
-        break;
-      case "takeHit":
-        if (this.imageSrc !== this.sprites.takeHit.imageSrc) {
-          this.imageSrc = this.sprites.takeHit.imageSrc;
-          this.image.src = this.imageSrc;
-          this.frameMax = this.sprites.takeHit.frameMax;
-          this.frameCurrent = 0;
-        }else if(this.frameCurrent == this.frameMax-1){
-          this.status.takeHit = false
-        }
-        break;
       case "atack1":
         if (this.imageSrc !== this.sprites.atack1.imageSrc) {
           this.imageSrc = this.sprites.atack1.imageSrc;
