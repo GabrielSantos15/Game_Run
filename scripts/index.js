@@ -1,16 +1,76 @@
+const debugMode = false;
+
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 
-const gravity = 0.7;
+// canvas.width = 1024;
+// canvas.height = 576;
+canvas.width = innerWidth
+canvas.height = innerHeight
+
+const scaledCanvas = {
+  width: canvas.width / 4,
+  height: canvas.height / 4,
+};
+
+const floorCollisions2D = [];
+for (let i = 0; i < floorCollisions.length; i += 36) {
+  floorCollisions2D.push(floorCollisions.slice(i, i + 36));
+}
+const collisionBlocks = [];
+floorCollisions2D.forEach((row, y) => {
+  row.forEach((symbol, x) => {
+    if (symbol == 202) {
+      collisionBlocks.push(
+        new CollisionBlock({
+          position: {
+            x: x * 16,
+            y: y * 16,
+          },
+        })
+      );
+    }
+  });
+});
+
+const platformCollisions2D = [];
+for (let i = 0; i < platformCollisions.length; i += 36) {
+  platformCollisions2D.push(platformCollisions.slice(i, i + 36));
+}
+
+platformCollisions2D.forEach((row, y) => {
+  row.forEach((symbol, x) => {
+    if (symbol == 202) {
+      collisionBlocks.push(
+        new CollisionBlock({
+          position: {
+            x: x * 16,
+            y: y * 16,
+          },
+        })
+      );
+    }
+  });
+});
+
+const gravity = 0.5;
+
+// =================================== Informações do background =============
+const background = new Sprite({
+  width: canvas.width,
+  height: canvas.height,
+  position: {
+    x: 0,
+    y: 0,
+  },
+  imageSrc: "./images/background/background.png",
+});
 
 // =================================== Informações do jogador ============================
-
 const p1 = new Person({
-  life : 100,
+  life: 100,
   width: 45,
   height: 130,
-  standardWidth:45,
-  standardHeight:130,
   position: {
     x: canvas.width / 2,
     y: canvas.height / 2,
@@ -38,7 +98,7 @@ const p1 = new Person({
     atack: 0,
     defend: false,
     takeHit: false,
-    death: false
+    death: false,
   },
   imageSrc: "./images/sprites/Arrow/Idle.png",
   scale: 3,
@@ -129,6 +189,15 @@ const p1 = new Person({
 function game() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  ctx.save();
+  ctx.scale(4,4)
+  ctx.translate(0, -background.image.height + scaledCanvas.height)
+  background.draw();
+  collisionBlocks.forEach((collisionBlock) => {
+    collisionBlock.update();
+  });
+  ctx.restore();
+
   p1.update();
   p1.draw();
   requestAnimationFrame(game);
@@ -188,6 +257,6 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
-function dano(){
-  p1.demage(10)
+function dano() {
+  p1.demage(10);
 }

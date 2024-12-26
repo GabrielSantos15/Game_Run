@@ -77,7 +77,7 @@ class Person extends Sprite {
     }
 
     // pulo
-    if (this.direction.up && this.velocity.y == 0) {
+    if (this.direction.up && this.velocity.y == 0  ) {
       this.velocity.y = -15;
     }
 
@@ -85,25 +85,27 @@ class Person extends Sprite {
     this.position.y += this.velocity.y;
 
     // gravidade
-    if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
-      this.velocity.y = 0;
-    } else {
+    if (this.position.y + this.height + this.velocity.y < canvas.height) {
       this.velocity.y += gravity;
+    } else {
+      this.velocity.y = 0;
     }
 
     this.updateSprite();
 
     // desenha caixas de colisão
-    // ctx.fillStyle = "#ff0000";
-    // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-    // ctx.fillStyle = "#00ff00";
-    // ctx.fillRect(
-    //   this.hitBox.position.x,
-    //   this.hitBox.position.y,
-    //   this.hitBox.width,
-    //   this.hitBox.height
-    // );
-    document.querySelector("#life").innerHTML = this.life
+
+    if(debugMode){
+      ctx.fillStyle = "#00ff00";
+      ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+      ctx.fillStyle = "#ff0000";
+      ctx.fillRect(
+        this.hitBox.position.x,
+        this.hitBox.position.y,
+        this.hitBox.width,
+        this.hitBox.height
+      );
+    }
   }
 
   demage(hitPower) {
@@ -113,7 +115,6 @@ class Person extends Sprite {
 
   // aplica os sprites
   switchSprite(sprite) {
-    console.log(this.imageSrc);
     if (this.imageSrc !== this.sprites[sprite].imageSrc) {
       this.imageSrc = this.sprites[sprite].imageSrc;
       this.image.src = this.imageSrc;

@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script defer src="scripts/Sprites.js"></script>
-    <script defer src="scripts/Player.js"></script>
-    <script defer src="scripts/script.js"></script>
+    <script defer src="scripts/data/collisions.js"></script>
+    <script defer src="scripts/classes/CollisionBlock.js"></script>
+    <script defer src="scripts/classes/Sprites.js"></script>
+    <script defer src="scripts/classes/Player.js"></script>
+    <script defer src="scripts/index.js"></script>
     <title>Document</title>
     <style>
         *{
@@ -14,7 +16,7 @@
             box-sizing: border-box;
         }
         body{
-            background-color: #000;
+            background-color: #ffffff;
         }
         canvas{
             background-color: #000000;
@@ -22,8 +24,6 @@
     </style>
 </head>
 <body>
-    <canvas width="900" height="600" id="canvas"></canvas>
-    <button onclick="dano()">- 10</button>
-    <output style="font-size: 3em;color: #fff;" id="life">000</output>
+    <canvas id="canvas"></canvas>
 </body>
 </html>

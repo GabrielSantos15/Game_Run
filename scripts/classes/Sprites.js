@@ -7,7 +7,7 @@ class Sprite {
     scale = 1,
     frameMax = 1,
     offset = { x: 0, y: 0 },
-    inverter,
+    inverter = false,
   }) {
     this.width = width;
     this.height = height;
