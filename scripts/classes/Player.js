@@ -4,6 +4,7 @@ class Person extends Sprite {
     width,
     height,
     position,
+    collisionBlocks,
     hitBox,
     direction,
     velocity,
@@ -30,6 +31,7 @@ class Person extends Sprite {
     this.width = width;
     this.height = height;
     this.position = position;
+    this.collisionBlocks = collisionBlocks;
     this.hitBox = hitBox;
     this.direction = direction;
     this.velocity = velocity;
@@ -46,9 +48,9 @@ class Person extends Sprite {
     // gerencia os sprite
     if (this.status.death) {
       this.switchSprite("death");
-    } else if(this.status.takeHit){
+    } else if (this.status.takeHit) {
       this.switchSprite("takeHit");
-    }else if (this.status.atack !== 0) {
+    } else if (this.status.atack !== 0) {
       this.switchSprite("atack" + this.status.atack);
     } else if (this.status.defend) {
       this.switchSprite("defend");
@@ -56,7 +58,7 @@ class Person extends Sprite {
       this.switchSprite("jumpUp");
     } else if (this.velocity.y > 0) {
       this.switchSprite("jumpDown");
-    }else if(this.direction.down){
+    } else if (this.direction.down) {
       this.switchSprite("slide");
     } else if (this.direction.left || this.direction.right) {
       this.switchSprite("run");
@@ -77,25 +79,21 @@ class Person extends Sprite {
     }
 
     // pulo
-    if (this.direction.up && this.velocity.y == 0  ) {
+    if (this.direction.up && this.velocity.y == 0) {
       this.velocity.y = -15;
     }
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
-    // gravidade
-    if (this.position.y + this.height + this.velocity.y < canvas.height) {
-      this.velocity.y += gravity;
-    } else {
-      this.velocity.y = 0;
-    }
+    this.applyGravity();
+    this.checkForVerticalCollisions();
 
     this.updateSprite();
 
     // desenha caixas de colisão
 
-    if(debugMode){
+    if (debugMode) {
       ctx.fillStyle = "#00ff00";
       ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
       ctx.fillStyle = "#ff0000";
@@ -105,6 +103,26 @@ class Person extends Sprite {
         this.hitBox.width,
         this.hitBox.height
       );
+    }
+  }
+
+  applyGravity() {
+    this.position.y += this.velocity.y;
+    this.velocity.y += gravity;
+  }
+
+  checkForVerticalCollisions() {
+    for (let i = 0; i < this.collisionBlocks.length; i++) {
+      const collisionBlock = this.collisionBlocks[i];
+
+      if (
+        collision({
+          object1: this,
+          object2: collisionBlock,
+        })
+      ) {
+        console.log("you are colliding")
+      }
     }
   }
 
@@ -120,13 +138,13 @@ class Person extends Sprite {
       this.image.src = this.imageSrc;
       this.frameMax = this.sprites[sprite].frameMax;
       this.frameCurrent = 0;
-  }
-  if (sprite === "death" && this.frameCurrent === this.frameMax - 1) {
+    }
+    if (sprite === "death" && this.frameCurrent === this.frameMax - 1) {
       window.location.reload();
-  }
-  if (sprite === "takeHit" && this.frameCurrent === this.frameMax - 1) {
+    }
+    if (sprite === "takeHit" && this.frameCurrent === this.frameMax - 1) {
       this.status.takeHit = false;
-  }
+    }
     switch (sprite) {
       case "atack1":
         if (this.imageSrc !== this.sprites.atack1.imageSrc) {

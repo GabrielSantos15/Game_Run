@@ -1,4 +1,4 @@
-const debugMode = false;
+const debugMode = true;
 
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
@@ -73,8 +73,9 @@ const p1 = new Person({
   height: 130,
   position: {
     x: canvas.width / 2,
-    y: canvas.height / 2,
+    y: 0,
   },
+  collisionBlocks,
   hitBox: {
     width: 0,
     height: 0,
