@@ -56,7 +56,7 @@ class Person extends Sprite {
     } else if (this.velocity.y < 0) {
       this.switchSprite("jumpUp");
     } else if (this.velocity.y > 0) {
-      // this.switchSprite("jumpDown");
+      this.switchSprite("jumpDown");
     } else if (this.direction.down) {
       this.switchSprite("slide");
     } else if (this.direction.left || this.direction.right) {
@@ -80,17 +80,16 @@ class Person extends Sprite {
 
     // pulo
     if (this.direction.up && this.velocity.y == 0) {
-      this.velocity.y = -6;
+      this.velocity.y = -7.5;
     }
 
     this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
 
     this.checkForHorizontalCollisions()
     this.applyGravity();
     this.checkForVerticalCollisions();
     
-    console.log(this.velocity.x)
+    console.log(this.velocity.y)
     this.updateSprite();
 
     // desenha caixas de colisão
@@ -133,8 +132,8 @@ class Person extends Sprite {
   }
 
   applyGravity() {
-    this.position.y += this.velocity.y;
     this.velocity.y += gravity;
+    this.position.y += this.velocity.y;
   }
 
   checkForVerticalCollisions() {
@@ -149,12 +148,12 @@ class Person extends Sprite {
       ) {
         if(this.velocity.y > 0){
           this.velocity.y = 0
-          this.position.y = collisionBlock.position.y - this.height - .6
+          this.position.y = collisionBlock.position.y - this.height - .01
           break
         }
         if(this.velocity.y < 0){
           this.velocity.y = 0
-          this.position.y = collisionBlock.position.y + collisionBlock.height + .6
+          this.position.y = collisionBlock.position.y + collisionBlock.height + .1
           break
         }
       }

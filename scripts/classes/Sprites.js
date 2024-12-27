@@ -12,7 +12,9 @@ class Sprite {
     this.width = width;
     this.height = height;
     this.position = position;
+    this.loaded = false
     this.image = new Image();
+    this.image.onload = ()=>{this.loaded = true}
     this.image.src = imageSrc;
     this.scale = scale;
     this.frameMax = frameMax;
@@ -24,6 +26,8 @@ class Sprite {
   }
 
   draw() {
+    if(!this.loaded)return
+
     if (this.inverter == true) {
       ctx.scale(-1, 1);
       ctx.translate(-canvas.width, 0);
