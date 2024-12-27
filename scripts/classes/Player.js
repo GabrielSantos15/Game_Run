@@ -42,9 +42,8 @@ class Person extends Sprite {
   }
 
   update() {
-    this.velocity.x = 0;
     if (this.life <= 0) this.status.death = true;
-
+    
     // gerencia os sprite
     if (this.status.death) {
       this.switchSprite("death");
@@ -57,7 +56,7 @@ class Person extends Sprite {
     } else if (this.velocity.y < 0) {
       this.switchSprite("jumpUp");
     } else if (this.velocity.y > 0) {
-      this.switchSprite("jumpDown");
+      // this.switchSprite("jumpDown");
     } else if (this.direction.down) {
       this.switchSprite("slide");
     } else if (this.direction.left || this.direction.right) {
@@ -65,9 +64,10 @@ class Person extends Sprite {
     } else {
       this.switchSprite("idle");
     }
-
+    
+    this.velocity.x = 0;
     // movimentação
-    if (!(this.status.atack !== 0 || this.status.defend)) {
+    if (!(this.status.atack !== 0 || this.status.defend || this.status.death)) {
       if (this.direction.left) {
         this.velocity.x = -this.speed;
         this.inverter = true;
@@ -80,15 +80,17 @@ class Person extends Sprite {
 
     // pulo
     if (this.direction.up && this.velocity.y == 0) {
-      this.velocity.y = -15;
+      this.velocity.y = -6;
     }
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
+    this.checkForHorizontalCollisions()
     this.applyGravity();
     this.checkForVerticalCollisions();
-
+    
+    console.log(this.velocity.x)
     this.updateSprite();
 
     // desenha caixas de colisão
@@ -103,6 +105,30 @@ class Person extends Sprite {
         this.hitBox.width,
         this.hitBox.height
       );
+    }
+  }
+
+  checkForHorizontalCollisions() {
+    for (let i = 0; i < this.collisionBlocks.length; i++) {
+      const collisionBlock = this.collisionBlocks[i];
+
+      if (
+        collision({
+          object1: this,
+          object2: collisionBlock,
+        })
+      ) {
+        if(this.velocity.x > 0){
+          this.velocity.x = 0
+          this.position.x = collisionBlock.position.x - this.width- .01
+          break
+        }
+        if(this.velocity.x < 0){
+          this.velocity.x = 0
+          this.position.x = collisionBlock.position.x + collisionBlock.width + .01
+          break
+        }
+      }
     }
   }
 
@@ -121,7 +147,16 @@ class Person extends Sprite {
           object2: collisionBlock,
         })
       ) {
-        console.log("you are colliding")
+        if(this.velocity.y > 0){
+          this.velocity.y = 0
+          this.position.y = collisionBlock.position.y - this.height - .6
+          break
+        }
+        if(this.velocity.y < 0){
+          this.velocity.y = 0
+          this.position.y = collisionBlock.position.y + collisionBlock.height + .6
+          break
+        }
       }
     }
   }

@@ -1,12 +1,12 @@
-const debugMode = true;
+let debugMode = true;
 
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 
 // canvas.width = 1024;
 // canvas.height = 576;
-canvas.width = innerWidth
-canvas.height = innerHeight
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
 const scaledCanvas = {
   width: canvas.width / 4,
@@ -69,10 +69,10 @@ const background = new Sprite({
 // =================================== Informações do jogador ============================
 const p1 = new Person({
   life: 100,
-  width: 45,
-  height: 130,
+  width: 12,
+  height: 30,
   position: {
-    x: canvas.width / 2,
+    x: 250,
     y: 0,
   },
   collisionBlocks,
@@ -94,7 +94,7 @@ const p1 = new Person({
     x: 0,
     y: 0,
   },
-  speed: 7,
+  speed: 3,
   status: {
     atack: 0,
     defend: false,
@@ -102,9 +102,9 @@ const p1 = new Person({
     death: false,
   },
   imageSrc: "./images/sprites/Arrow/Idle.png",
-  scale: 3,
+  scale: .7,
   frameMax: 12,
-  offset: { x: 137 * 3, y: 84 * 3 },
+  offset: { x: 95 , y: 59 },
   inverter: false,
   sprites: {
     idle: {
@@ -146,11 +146,11 @@ const p1 = new Person({
       atackStart: 6,
       atackEnd: 9,
       hitBox: {
-        width: 100,
-        height: 30,
+        width: 25,
+        height: 7,
         position: {
-          x: 120,
-          y: 20,
+          x: 30,
+          y: 5,
         },
       },
     },
@@ -160,11 +160,11 @@ const p1 = new Person({
       atackStart: 9,
       atackEnd: 11,
       hitBox: {
-        width: 50,
-        height: 50,
+        width: 15,
+        height: 15,
         position: {
-          x: 70,
-          y: 10,
+          x: 18,
+          y: 3,
         },
       },
     },
@@ -174,11 +174,11 @@ const p1 = new Person({
       atackStart: 6,
       atackEnd: 9,
       hitBox: {
-        width: 170,
-        height: 60,
+        width: 170/4,
+        height: 60/4,
         position: {
-          x: -100,
-          y: -90,
+          x: -100/4,
+          y: -90/4,
         },
       },
     },
@@ -191,16 +191,16 @@ function game() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.save();
-  ctx.scale(4,4)
-  ctx.translate(0, -background.image.height + scaledCanvas.height)
+  ctx.scale(4, 4);
+  ctx.translate(0, -background.image.height + scaledCanvas.height);
   background.draw();
   collisionBlocks.forEach((collisionBlock) => {
     collisionBlock.update();
   });
-  ctx.restore();
-
   p1.update();
   p1.draw();
+  ctx.restore();
+
   requestAnimationFrame(game);
 }
 game();
@@ -208,7 +208,6 @@ game();
 // =================================== Teclado ============================
 
 window.addEventListener("keydown", (event) => {
-  console.log(event.key);
   switch (event.key) {
     case "w":
       p1.direction.up = true;
@@ -218,7 +217,7 @@ window.addEventListener("keydown", (event) => {
       break;
     case "s":
       p1.direction.down = true;
-      p1.speed = 10;
+      p1.speed = 4;
       break;
     case "d":
       p1.direction.right = true;
@@ -247,13 +246,16 @@ window.addEventListener("keyup", (event) => {
       break;
     case "s":
       p1.direction.down = false;
-      p1.speed = 7;
+      p1.velocity.x = 3;
       break;
     case "d":
       p1.direction.right = false;
       break;
     case "Shift":
       p1.status.defend = false;
+      break;
+    case ".":
+      debugMode ? debugMode = false : debugMode = true
       break;
   }
 });
