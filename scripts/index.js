@@ -106,8 +106,6 @@ function game() {
   players.map((player)=>{
     player.update();
     player.checkForHorizontalCanvasCollision()
-    player.draw();
-
   })
 
   ctx.restore();

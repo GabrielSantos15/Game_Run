@@ -14,6 +14,7 @@ const Arrow = {
       x: 0,
       y: 0,
     },
+    hitPower : 0
   },
   direction: {
     up: false,
@@ -83,6 +84,7 @@ const Arrow = {
           x: 30,
           y: 5,
         },
+        hitPower: 20
       },
     },
     atack2: {
@@ -97,6 +99,7 @@ const Arrow = {
           x: 18,
           y: 3,
         },
+        hitPower:10
       },
     },
     atack3: {
@@ -112,6 +115,7 @@ const Arrow = {
           y: -90 / 4,
         },
       },
+      hitPower: 30
     },
     atack4: {
       imageSrc: "./images/sprites/Arrow/AtackSp.png",
@@ -119,12 +123,13 @@ const Arrow = {
       atackStart: 10,
       atackEnd: 12,
       hitBox: {
-        width: 170 / 4,
-        height: 60 / 4,
+        width: 100,
+        height: 5,
         position: {
-          x: -100 / 4,
-          y: -90 / 4,
+          x: 0,
+          y: 9,
         },
+        hitPower: 40
       },
     },
   },
