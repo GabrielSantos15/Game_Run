@@ -38,24 +38,26 @@ for (let i = 0; i < platformCollisions.length; i += 36) {
   platformCollisions2D.push(platformCollisions.slice(i, i + 36));
 }
 
+const platformCollisionBlocks = []
 platformCollisions2D.forEach((row, y) => {
   row.forEach((symbol, x) => {
     if (symbol == 202) {
-      collisionBlocks.push(
+      platformCollisionBlocks.push(
         new CollisionBlock({
           position: {
             x: x * 16,
             y: y * 16,
           },
+          height: 4,
         })
       );
     }
   });
 });
 
-const gravity = 0.5;
+const gravity = 0.1;
 
-// =================================== Informações do background =============
+// =================================== Informações do background ========================
 const background = new Sprite({
   width: canvas.width,
   height: canvas.height,
@@ -65,6 +67,16 @@ const background = new Sprite({
   },
   imageSrc: "./images/background/background.png",
 });
+
+const backgroundHeight = 432
+
+// ================================== Informações da camera ==============================
+const camera ={
+  position:{
+    x:0,
+    y: -backgroundHeight + scaledCanvas.height
+  }
+}
 
 // =================================== Informações do jogador ============================
 const p1 = new Person({
@@ -76,6 +88,7 @@ const p1 = new Person({
     y: 0,
   },
   collisionBlocks,
+  platformCollisionBlocks,
   hitBox: {
     width: 0,
     height: 0,
@@ -94,7 +107,7 @@ const p1 = new Person({
     x: 0,
     y: 0,
   },
-  speed: 3,
+  speed: 2,
   status: {
     atack: 0,
     defend: false,
@@ -192,13 +205,18 @@ function game() {
 
   ctx.save();
   ctx.scale(4, 4);
-  ctx.translate(0, -background.image.height + scaledCanvas.height);
+  ctx.translate(camera.position.x,camera.position.y);
   background.draw();
   collisionBlocks.forEach((collisionBlock) => {
     collisionBlock.update();
   });
+  platformCollisionBlocks.forEach((collisionBlock) => {
+    collisionBlock.update();
+  });
   p1.update();
+  p1.checkForHorizontalCanvasCollision()
   p1.draw();
+
   ctx.restore();
 
   requestAnimationFrame(game);
@@ -217,7 +235,7 @@ window.addEventListener("keydown", (event) => {
       break;
     case "s":
       p1.direction.down = true;
-      p1.speed = 4;
+      p1.speed = 2.5;
       break;
     case "d":
       p1.direction.right = true;
@@ -246,7 +264,7 @@ window.addEventListener("keyup", (event) => {
       break;
     case "s":
       p1.direction.down = false;
-      p1.velocity.x = 3;
+      p1.velocity.x = 2;
       break;
     case "d":
       p1.direction.right = false;

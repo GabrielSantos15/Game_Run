@@ -5,6 +5,7 @@ class Person extends Sprite {
     height,
     position,
     collisionBlocks,
+    platformCollisionBlocks,
     hitBox,
     direction,
     velocity,
@@ -32,6 +33,7 @@ class Person extends Sprite {
     this.height = height;
     this.position = position;
     this.collisionBlocks = collisionBlocks;
+    this.platformCollisionBlocks = platformCollisionBlocks;
     this.hitBox = hitBox;
     this.direction = direction;
     this.velocity = velocity;
@@ -39,11 +41,78 @@ class Person extends Sprite {
     this.status = status;
     this.inverter = inverter;
     this.sprites = sprites;
+    this.camerabox = {
+      position: {
+        x: this.position.x - 90,
+        y: this.position.y - 30,
+      },
+      width: 200,
+      height: 80,
+    };
+  }
+
+  updateCamerabox() {
+    this.camerabox = {
+      position: {
+        x: this.position.x - 90,
+        y: this.position.y - 30,
+      },
+      width: 200,
+      height: 80,
+    };
+  }
+
+  checkForHorizontalCanvasCollision(){
+    if(this.position.x + this.width + this.velocity.x >= background.image.width){
+      this.position.x = background.image.width - this.width 
+      this.velocity.x = 0
+    }else if(this.position.x + this.velocity.x <= 0){
+      this.position.x =  Math.abs(this.velocity.x)
+      this.velocity.x = 0
+    }
+  }
+
+  shouldPanCameraToTheLeft({ canvas, camera  }) {
+    const cameraboxRightSide = this.camerabox.position.x + this.camerabox.width;
+    const scaledDownCanvasWidth = canvas.width / 4;
+
+    if(cameraboxRightSide >= background.image.width)return
+
+    if (cameraboxRightSide >= scaledDownCanvasWidth + Math.abs(camera.position.x)) {
+      camera.position.x -= this.velocity.x;
+    }
+  }
+
+  shouldPanCameraToTheRight({ canvas, camera  }) {
+    if(this.camerabox.position.x <= 0)return
+
+    if (this.camerabox.position.x <= Math.abs(camera.position.x)) {
+      camera.position.x -= this.velocity.x;
+    }
+  }
+
+  shouldPanCameraToTheDown({ canvas, camera  }) {
+    if(this.camerabox.position.y + this.velocity.y<= 0)return
+
+    if (this.camerabox.position.y <= Math.abs(camera.position.y)) {
+      camera.position.y -= this.velocity.y;
+    }
+  }
+
+  shouldPanCameraToTheUp({ canvas, camera  }) {
+    if(this.camerabox.position.y + this.camerabox.height + this.velocity.y >= background.image.height)return
+    const scaledCanvasHeight = canvas.height / 4;
+
+    if (this.camerabox.position.y + this.camerabox.height >= Math.abs(camera.position.y )+ scaledCanvasHeight) {
+      camera.position.y -= this.velocity.y;
+    }
   }
 
   update() {
+    this.updateCamerabox();
+
     if (this.life <= 0) this.status.death = true;
-    
+
     // gerencia os sprite
     if (this.status.death) {
       this.switchSprite("death");
@@ -55,8 +124,10 @@ class Person extends Sprite {
       this.switchSprite("defend");
     } else if (this.velocity.y < 0) {
       this.switchSprite("jumpUp");
+      this.shouldPanCameraToTheDown({camera,canvas})
     } else if (this.velocity.y > 0) {
       this.switchSprite("jumpDown");
+      this.shouldPanCameraToTheUp({canvas,camera})
     } else if (this.direction.down) {
       this.switchSprite("slide");
     } else if (this.direction.left || this.direction.right) {
@@ -64,32 +135,34 @@ class Person extends Sprite {
     } else {
       this.switchSprite("idle");
     }
-    
+
     this.velocity.x = 0;
     // movimentação
     if (!(this.status.atack !== 0 || this.status.defend || this.status.death)) {
       if (this.direction.left) {
+        
         this.velocity.x = -this.speed;
         this.inverter = true;
+        this.shouldPanCameraToTheRight({canvas,camera})
       }
       if (this.direction.right) {
         this.velocity.x = this.speed;
         this.inverter = false;
+        this.shouldPanCameraToTheLeft({ canvas, camera });
       }
     }
 
     // pulo
     if (this.direction.up && this.velocity.y == 0) {
-      this.velocity.y = -7.5;
+      this.velocity.y = -4;
     }
 
     this.position.x += this.velocity.x;
 
-    this.checkForHorizontalCollisions()
+    this.checkForHorizontalCollisions();
     this.applyGravity();
     this.checkForVerticalCollisions();
-    
-    console.log(this.velocity.y)
+
     this.updateSprite();
 
     // desenha caixas de colisão
@@ -104,6 +177,14 @@ class Person extends Sprite {
         this.hitBox.width,
         this.hitBox.height
       );
+
+      ctx.fillStyle = "#0000ff35";
+      ctx.fillRect(
+        this.camerabox.position.x,
+        this.camerabox.position.y,
+        this.camerabox.width,
+        this.camerabox.height
+      );
     }
   }
 
@@ -117,15 +198,16 @@ class Person extends Sprite {
           object2: collisionBlock,
         })
       ) {
-        if(this.velocity.x > 0){
-          this.velocity.x = 0
-          this.position.x = collisionBlock.position.x - this.width- .01
-          break
+        if (this.velocity.x > 0) {
+          this.velocity.x = 0;
+          this.position.x = collisionBlock.position.x - this.width - 0.01;
+          break;
         }
-        if(this.velocity.x < 0){
-          this.velocity.x = 0
-          this.position.x = collisionBlock.position.x + collisionBlock.width + .01
-          break
+        if (this.velocity.x < 0) {
+          this.velocity.x = 0;
+          this.position.x =
+            collisionBlock.position.x + collisionBlock.width + 0.01;
+          break;
         }
       }
     }
@@ -146,15 +228,35 @@ class Person extends Sprite {
           object2: collisionBlock,
         })
       ) {
-        if(this.velocity.y > 0){
-          this.velocity.y = 0
-          this.position.y = collisionBlock.position.y - this.height - .01
-          break
+        if (this.velocity.y > 0) {
+          this.velocity.y = 0;
+          this.position.y = collisionBlock.position.y - this.height - 0.01;
+          break;
         }
-        if(this.velocity.y < 0){
-          this.velocity.y = 0
-          this.position.y = collisionBlock.position.y + collisionBlock.height + .1
-          break
+        if (this.velocity.y < 0) {
+          this.velocity.y = 0;
+          this.position.y =
+            collisionBlock.position.y + collisionBlock.height + 0.1;
+          break;
+        }
+      }
+    }
+
+    // colisão das plataformas
+    for (let i = 0; i < this.platformCollisionBlocks.length; i++) {
+      const platformCollisionBlock = this.platformCollisionBlocks[i];
+
+      if (
+        platformCollision({
+          object1: this,
+          object2: platformCollisionBlock,
+        })
+      ) {
+        if (this.velocity.y > 0) {
+          this.velocity.y = 0;
+          this.position.y =
+            platformCollisionBlock.position.y - this.height - 0.01;
+          break;
         }
       }
     }
