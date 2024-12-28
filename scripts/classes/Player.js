@@ -4,8 +4,6 @@ class Person extends Sprite {
     width,
     height,
     position,
-    collisionBlocks,
-    platformCollisionBlocks,
     hitBox,
     direction,
     velocity,
@@ -32,8 +30,6 @@ class Person extends Sprite {
     this.width = width;
     this.height = height;
     this.position = position;
-    this.collisionBlocks = collisionBlocks;
-    this.platformCollisionBlocks = platformCollisionBlocks;
     this.hitBox = hitBox;
     this.direction = direction;
     this.velocity = velocity;
@@ -189,8 +185,8 @@ class Person extends Sprite {
   }
 
   checkForHorizontalCollisions() {
-    for (let i = 0; i < this.collisionBlocks.length; i++) {
-      const collisionBlock = this.collisionBlocks[i];
+    for (let i = 0; i < collisionBlocks.length; i++) {
+      const collisionBlock = collisionBlocks[i];
 
       if (
         collision({
@@ -219,8 +215,8 @@ class Person extends Sprite {
   }
 
   checkForVerticalCollisions() {
-    for (let i = 0; i < this.collisionBlocks.length; i++) {
-      const collisionBlock = this.collisionBlocks[i];
+    for (let i = 0; i < collisionBlocks.length; i++) {
+      const collisionBlock = collisionBlocks[i];
 
       if (
         collision({
@@ -243,8 +239,8 @@ class Person extends Sprite {
     }
 
     // colisão das plataformas
-    for (let i = 0; i < this.platformCollisionBlocks.length; i++) {
-      const platformCollisionBlock = this.platformCollisionBlocks[i];
+    for (let i = 0; i < platformCollisionBlocks.length; i++) {
+      const platformCollisionBlock = platformCollisionBlocks[i];
 
       if (
         platformCollision({
@@ -276,7 +272,7 @@ class Person extends Sprite {
       this.frameCurrent = 0;
     }
     if (sprite === "death" && this.frameCurrent === this.frameMax - 1) {
-      window.location.reload();
+      // window.location.reload();
     }
     if (sprite === "takeHit" && this.frameCurrent === this.frameMax - 1) {
       this.status.takeHit = false;
@@ -373,6 +369,38 @@ class Person extends Sprite {
           this.hitBox.position.y =
             this.position.y + this.sprites.atack3.hitBox.position.y;
         } else if (this.frameCurrent == this.sprites.atack3.atackEnd - 1) {
+          // remove a hitbox
+          this.hitBox.width = 0;
+          this.hitBox.height = 0;
+        }
+        break;
+      case "atack4":
+        if (this.imageSrc !== this.sprites.atack4.imageSrc) {
+          this.imageSrc = this.sprites.atack4.imageSrc;
+          this.image.src = this.imageSrc;
+          this.frameMax = this.sprites.atack4.frameMax;
+          this.frameCurrent = 0;
+        } else if (this.frameCurrent == this.frameMax - 1) {
+          this.status.atack = 0;
+        } else if (this.frameCurrent == this.sprites.atack4.atackStart) {
+          // adiciona a hitbox
+          this.hitBox.width = this.sprites.atack4.hitBox.width;
+          this.hitBox.height = this.sprites.atack4.hitBox.height;
+
+          if (!this.inverter) {
+            this.hitBox.position.x =
+              this.position.x +
+              this.width +
+              this.sprites.atack4.hitBox.position.x;
+          } else {
+            this.hitBox.position.x =
+              this.position.x -
+              this.sprites.atack4.hitBox.width -
+              this.sprites.atack4.hitBox.position.x;
+          }
+          this.hitBox.position.y =
+            this.position.y + this.sprites.atack4.hitBox.position.y;
+        } else if (this.frameCurrent == this.sprites.atack4.atackEnd - 1) {
           // remove a hitbox
           this.hitBox.width = 0;
           this.hitBox.height = 0;

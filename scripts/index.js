@@ -1,4 +1,4 @@
-let debugMode = true;
+let debugMode = false;
 
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
@@ -79,124 +79,13 @@ const camera ={
 }
 
 // =================================== Informações do jogador ============================
-const p1 = new Person({
-  life: 100,
-  width: 12,
-  height: 30,
-  position: {
-    x: 250,
-    y: 0,
-  },
-  collisionBlocks,
-  platformCollisionBlocks,
-  hitBox: {
-    width: 0,
-    height: 0,
-    position: {
-      x: 0,
-      y: 0,
-    },
-  },
-  direction: {
-    up: false,
-    down: false,
-    left: false,
-    right: false,
-  },
-  velocity: {
-    x: 0,
-    y: 0,
-  },
-  speed: 2,
-  status: {
-    atack: 0,
-    defend: false,
-    takeHit: false,
-    death: false,
-  },
-  imageSrc: "./images/sprites/Arrow/Idle.png",
-  scale: .7,
-  frameMax: 12,
-  offset: { x: 95 , y: 59 },
-  inverter: false,
-  sprites: {
-    idle: {
-      imageSrc: "./images/sprites/Arrow/Idle.png",
-      frameMax: 12,
-      image: new Image(),
-    },
-    run: {
-      imageSrc: "./images/sprites/Arrow/Run.png",
-      frameMax: 10,
-    },
-    slide: {
-      imageSrc: "./images/sprites/Arrow/Slide.png",
-      frameMax: 13,
-    },
-    jumpUp: {
-      imageSrc: "./images/sprites/Arrow/Jump_up.png",
-      frameMax: 3,
-    },
-    jumpDown: {
-      imageSrc: "./images/sprites/Arrow/Jump_down.png",
-      frameMax: 3,
-    },
-    defend: {
-      imageSrc: "./images/sprites/Arrow/Defend.png",
-      frameMax: 19,
-    },
-    takeHit: {
-      imageSrc: "./images/sprites/Arrow/takeHit.png",
-      frameMax: 6,
-    },
-    death: {
-      imageSrc: "./images/sprites/Arrow/Death.png",
-      frameMax: 19,
-    },
-    atack1: {
-      imageSrc: "./images/sprites/Arrow/Atack1.png",
-      frameMax: 10,
-      atackStart: 6,
-      atackEnd: 9,
-      hitBox: {
-        width: 25,
-        height: 7,
-        position: {
-          x: 30,
-          y: 5,
-        },
-      },
-    },
-    atack2: {
-      imageSrc: "./images/sprites/Arrow/Atack2.png",
-      frameMax: 15,
-      atackStart: 9,
-      atackEnd: 11,
-      hitBox: {
-        width: 15,
-        height: 15,
-        position: {
-          x: 18,
-          y: 3,
-        },
-      },
-    },
-    atack3: {
-      imageSrc: "./images/sprites/Arrow/Atack3.png",
-      frameMax: 12,
-      atackStart: 6,
-      atackEnd: 9,
-      hitBox: {
-        width: 170/4,
-        height: 60/4,
-        position: {
-          x: -100/4,
-          y: -90/4,
-        },
-      },
-    },
-  },
-});
+
+const players = []
+
+const p1 = new Person(WaterPrincess);
+players.push(p1)
+const p2 = new Person(Arrow);
+players.push(p2)
 
 // =================================== Gerenciador do jogo ============================
 
@@ -213,9 +102,13 @@ function game() {
   platformCollisionBlocks.forEach((collisionBlock) => {
     collisionBlock.update();
   });
-  p1.update();
-  p1.checkForHorizontalCanvasCollision()
-  p1.draw();
+
+  players.map((player)=>{
+    player.update();
+    player.checkForHorizontalCanvasCollision()
+    player.draw();
+
+  })
 
   ctx.restore();
 
@@ -252,6 +145,9 @@ window.addEventListener("keydown", (event) => {
     case "r":
       p1.status.atack = 3;
       break;
+    case " ":
+      p1.status.atack = 4;
+      break;
   }
 });
 window.addEventListener("keyup", (event) => {
@@ -274,6 +170,41 @@ window.addEventListener("keyup", (event) => {
       break;
     case ".":
       debugMode ? debugMode = false : debugMode = true
+      break;
+  }
+});
+window.addEventListener("keydown", (event) => {
+
+  switch (event.key) {
+    case "ArrowUp":
+      p2.direction.up = true;
+      break;
+    case "ArrowLeft":
+      p2.direction.left = true;
+      break;
+    case "ArrowDown":
+      p2.direction.down = true;
+      p2.speed = 2.5;
+      break;
+    case "ArrowRight":
+      p2.direction.right = true;
+      break;
+  }
+});
+window.addEventListener("keyup", (event) => {
+  switch (event.key) {
+    case "ArrowUp":
+      p2.direction.up = false;
+      break;
+    case "ArrowLeft":
+      p2.direction.left = false;
+      break;
+    case "ArrowDown":
+      p2.direction.down = false;
+      p2.velocity.x = 2;
+      break;
+    case "ArrowRight":
+      p2.direction.right = false;
       break;
   }
 });
