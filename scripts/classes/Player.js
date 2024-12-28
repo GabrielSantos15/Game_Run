@@ -119,7 +119,7 @@ class Person extends Sprite {
 
   update() {
     this.updateCamerabox();
-    if(this.status.death && this.frameCurrent === this.frameMax - 1)return
+    if (this.status.death && this.frameCurrent === this.frameMax - 1) return;
 
     if (this.life <= 0) this.status.death = true;
 
@@ -198,7 +198,6 @@ class Person extends Sprite {
     }
 
     this.draw();
-
   }
 
   checkForHorizontalCollisions() {
@@ -277,14 +276,20 @@ class Person extends Sprite {
 
   checkDemage() {
     players.map((p) => {
-      if (p == this || this.status.takeHit) return;
+      if (p == this || this.status.takeHit || this.status.defend) return;
       if (
         collision({ object1: this, object2: p.hitBox }) &&
         !this.status.takeHit
       ) {
         this.status.takeHit = true;
         this.life -= p.hitBox.hitPower;
-        console.log("acertou")
+        if (this.life < 0) this.life = 0;
+
+        if (players[0] == this) {
+          document.querySelector("#lifep1").style.width = this.life + "%";
+        } else {
+          document.querySelector("#lifep2").style.width = this.life + "%";
+        }
       }
     });
   }
@@ -305,7 +310,7 @@ class Person extends Sprite {
     this.hitBox.position.y =
       this.position.y + this.sprites[atack].hitBox.position.y;
 
-    this.hitBox.hitPower = this.sprites[atack].hitBox.hitPower
+    this.hitBox.hitPower = this.sprites[atack].hitBox.hitPower;
   }
   removeHitbox() {
     this.hitBox.width = 0;
