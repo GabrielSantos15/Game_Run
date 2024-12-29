@@ -1,10 +1,10 @@
-const Arrow = {
+const windWarrior = {
   life: 100,
   width: 12,
   height: 30,
   position: {
     x: 162,
-    y: 369.99,
+    y: 0,
   },
 
   hitBox: {
@@ -33,50 +33,50 @@ const Arrow = {
     takeHit: false,
     death: false,
   },
-  imageSrc: "./images/sprites/Arrow/Idle.png",
+  imageSrc: "./images/sprites/windWarrior/Idle.png",
   scale: 0.7,
   frameMax: 12,
   offset: { x: 95, y: 59 },
   inverter: false,
   sprites: {
     idle: {
-      imageSrc: "./images/sprites/Arrow/Idle.png",
-      frameMax: 12,
+      imageSrc: "./images/sprites/windWarrior/Idle.png",
+      frameMax: 8,
       image: new Image(),
     },
     run: {
-      imageSrc: "./images/sprites/Arrow/Run.png",
-      frameMax: 10,
+      imageSrc: "./images/sprites/windWarrior/Run.png",
+      frameMax: 8,
     },
     slide: {
-      imageSrc: "./images/sprites/Arrow/Slide.png",
-      frameMax: 13,
+      imageSrc: "./images/sprites/windWarrior/Slide.png",
+      frameMax: 6,
     },
     jumpUp: {
-      imageSrc: "./images/sprites/Arrow/Jump_up.png",
+      imageSrc: "./images/sprites/windWarrior/Jump_up.png",
       frameMax: 3,
     },
     jumpDown: {
-      imageSrc: "./images/sprites/Arrow/Jump_down.png",
+      imageSrc: "./images/sprites/windWarrior/Jump_down.png",
       frameMax: 3,
     },
     defend: {
-      imageSrc: "./images/sprites/Arrow/Defend.png",
-      frameMax: 19,
+      imageSrc: "./images/sprites/windWarrior/Defend.png",
+      frameMax: 8,
     },
     takeHit: {
-      imageSrc: "./images/sprites/Arrow/takeHit.png",
+      imageSrc: "./images/sprites/windWarrior/takeHit.png",
       frameMax: 6,
     },
     death: {
-      imageSrc: "./images/sprites/Arrow/Death.png",
+      imageSrc: "./images/sprites/windWarrior/Death.png",
       frameMax: 19,
     },
     atack1: {
-      imageSrc: "./images/sprites/Arrow/Atack1.png",
-      frameMax: 10,
-      atackStart: 6,
-      atackEnd: 9,
+      imageSrc: "./images/sprites/windWarrior/Atack1.png",
+      frameMax: 8,
+      atackStart: 4,
+      atackEnd: 6,
       hitBox: {
         width: 50,
         height: 7,
@@ -88,8 +88,8 @@ const Arrow = {
       },
     },
     atack2: {
-      imageSrc: "./images/sprites/Arrow/Atack2.png",
-      frameMax: 15,
+      imageSrc: "./images/sprites/windWarrior/Atack2.png",
+      frameMax: 18,
       atackStart: 9,
       atackEnd: 11,
       hitBox: {
@@ -103,8 +103,8 @@ const Arrow = {
       },
     },
     atack3: {
-      imageSrc: "./images/sprites/Arrow/Atack3.png",
-      frameMax: 12,
+      imageSrc: "./images/sprites/windWarrior/Atack3.png",
+      frameMax: 26,
       atackStart: 6,
       atackEnd: 9,
       hitBox: {
@@ -118,8 +118,8 @@ const Arrow = {
       hitPower: 30
     },
     atack4: {
-      imageSrc: "./images/sprites/Arrow/AtackSp.png",
-      frameMax: 17,
+      imageSrc: "./images/sprites/windWarrior/AtackSp.png",
+      frameMax: 30,
       atackStart: 10,
       atackEnd: 12,
       hitBox: {

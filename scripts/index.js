@@ -82,7 +82,7 @@ const camera ={
 
 const players = []
 
-const p1 = new Person(Arrow);
+const p1 = new Person(windWarrior);
 players.push(p1)
 const p2 = new Person(WaterPrincess);
 players.push(p2)
