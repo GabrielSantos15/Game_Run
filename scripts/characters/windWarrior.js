@@ -3,8 +3,8 @@ const windWarrior = {
   width: 12,
   height: 30,
   position: {
-    x: 162,
-    y: 0,
+    x: 702,
+    y: 350,
   },
 
   hitBox: {
@@ -34,9 +34,9 @@ const windWarrior = {
     death: false,
   },
   imageSrc: "./images/sprites/windWarrior/Idle.png",
-  scale: 0.7,
+  scale: .8,
   frameMax: 12,
-  offset: { x: 95, y: 59 },
+  offset: { x: 109, y: 73},
   inverter: false,
   sprites: {
     idle: {
@@ -78,10 +78,10 @@ const windWarrior = {
       atackStart: 4,
       atackEnd: 6,
       hitBox: {
-        width: 50,
-        height: 7,
+        width: 40,
+        height: 15,
         position: {
-          x: 0,
+          x: -20,
           y: 5,
         },
         hitPower: 20
@@ -90,29 +90,29 @@ const windWarrior = {
     atack2: {
       imageSrc: "./images/sprites/windWarrior/Atack2.png",
       frameMax: 18,
-      atackStart: 9,
-      atackEnd: 11,
+      atackStart: 3,
+      atackEnd: 7,
       hitBox: {
-        width: 15,
+        width: 40,
         height: 15,
         position: {
-          x: 18,
-          y: 3,
+          x: -20,
+          y: 5,
         },
-        hitPower:10
+        hitPower:30
       },
     },
     atack3: {
       imageSrc: "./images/sprites/windWarrior/Atack3.png",
       frameMax: 26,
-      atackStart: 6,
-      atackEnd: 9,
+      atackStart: 9,
+      atackEnd: 15,
       hitBox: {
-        width: 170 / 4,
-        height: 60 / 4,
+        width: 90,
+        height: 30,
         position: {
-          x: -100 / 4,
-          y: -90 / 4,
+          x: -10,
+          y: 0,
         },
       },
       hitPower: 30
@@ -123,11 +123,11 @@ const windWarrior = {
       atackStart: 10,
       atackEnd: 12,
       hitBox: {
-        width: 100,
-        height: 5,
+        width: 80,
+        height: 40,
         position: {
-          x: 0,
-          y: 9,
+          x: -40,
+          y: -10,
         },
         hitPower: 40
       },

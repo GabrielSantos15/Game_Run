@@ -4,7 +4,7 @@ const WaterPrincess = {
   height: 30,
   position: {
     x: 100,
-    y: 369.99,
+    y: 360,
   },
 
   hitBox: {
