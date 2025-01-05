@@ -1,10 +1,11 @@
 const Arrow = {
+  username: "Gabriel.S",
   life: 100,
   width: 12,
   height: 30,
   position: {
     x: 162,
-    y: 369.99,
+    y: 360,
   },
 
   hitBox: {

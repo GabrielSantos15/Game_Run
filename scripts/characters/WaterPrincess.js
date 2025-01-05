@@ -1,4 +1,5 @@
 const WaterPrincess = {
+  username: "Raquel.S",
   life: 100,
   width: 12,
   height: 30,

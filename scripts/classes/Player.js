@@ -1,5 +1,6 @@
 class Person extends Sprite {
   constructor({
+    username,
     life,
     width,
     height,
@@ -26,6 +27,7 @@ class Person extends Sprite {
       offset,
       inverter,
     });
+    this.username = username;
     this.life = life;
     this.width = width;
     this.height = height;
@@ -196,6 +198,36 @@ class Person extends Sprite {
         this.camerabox.height
       );
     }
+
+    
+    
+    const barWidth = 20; // Largura da barra de vida
+    const barHeight = 2; // Altura da barra de vida
+    const offsetY = 5; // Distância acima do jogador
+    
+    ctx.font = "4px Arial"; // Tamanho e fonte do texto
+    ctx.fillStyle = "#fff"; // Cor do texto
+    ctx.textAlign = "center";
+
+    ctx.fillText(this.username, this.position.x + this.width/2, this.position.y - 8);
+
+    // Barra vermelha (fundo da vida)
+    ctx.fillStyle = "#f00";
+    ctx.fillRect(
+      this.position.x + this.width / 2 - barWidth / 2,
+      this.position.y - offsetY,
+      barWidth,
+      barHeight
+    );
+
+    // Barra verde (vida restante)
+    ctx.fillStyle = "#0f0";
+    ctx.fillRect(
+      this.position.x + this.width / 2 - barWidth / 2,
+      this.position.y - offsetY,
+      (this.life / 100) * barWidth, // Proporção da vida
+      barHeight
+    );
 
     this.draw();
   }
